@@ -53,8 +53,8 @@ def init_population(n, p):
 def cross_over(population_list, n, p):
     n_new = n//2
     for i in range(0, p, 2):
-        child1 = population_list[i][:n_new] + population_list[i+1][n_new:] + [None, None]
-        child2 = population_list[i+1][:n_new] + population_list[i][n_new:] + [None, None]
+        child1 = population_list[i][:n_new] + population_list[i+1][n_new:]
+        child2 = population_list[i+1][:n_new] + population_list[i][n_new:]
         population_list.append(child1)
         population_list.append(child2)
     return population_list
