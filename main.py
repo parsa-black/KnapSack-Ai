@@ -1,52 +1,50 @@
 # Import Dependencies
 from random import randint
 from random import shuffle
+import csv
+
+# Specify the path to your CSV file
+csv_file_path = './KnapSack.csv'
 
 # Set The Problem  and Algorithm parameters
-N = 29  # Number of items
+N = 1  # Number of items
 MAX_WEIGHT = 220  # Maximum Weight of Bag
 MAX_SIZE = 2  # Maximum Size of Bag
-objects = [(10, 2), (5, 3), (15, 5), (7, 7), (6, 1), (18, 4), (3, 1)]
+objects = []
 
-POPULATION_SIZE = 4
+POPULATION_SIZE = 29
 MUTATION_RATE = 0.8
 EPOCH = 200
 
 
 # Item Class
-
 class Item:
-    def __init__(self, value, weight):
-        self.value = value
+    def __init__(self, weight, size, value):
         self.weight = weight
+        self.size = size
+        self.value = value
 
 
-# Item Getter Function
-
-def get_items(n, input_items=None, verbos=0):
-    items = []
-    if input_items is None:
-        for i in range(n):
-            print(f"Items #{i + 1}")
-            item_value = int(input("Please Enter the Value of The Item: "))
-            item_weight = int(input("Please Enter the Weight of The Item: "))
-            items.append(Item(item_value, item_weight))
-    else:
-        for item in input_items:
-            items.append(Item(item[0], item[1]))
-    if verbos:
-        for item in items:
-            print(f"Item #{items.index(item) + 1}: Value:{item.value} Weight:{item.weight}")
-    return items
+with open(csv_file_path, 'r') as file:
+    # Create a CSV reader object
+    csv_reader = csv.reader(file)
+    for row in csv_reader:
+        weight = row[0]
+        size = row[1]
+        value = row[2]
+        objects.append(Item(weight, size, value))
+    objects.pop(0)
+    # for i in range(29):
+    #     print(f"item:{i} Weight: {objects[i].weight} Size:{objects[i].size} Value:{objects[i].value}")
 
 
 # Init Population Function
-def init_population(n, p):
+def init_population(p):
     population_list = []
     for i in range(p):
-        new_member = [0 for i in range(n)] + [1 for i in range(n)]
+        new_member = [0 for i in range(1)] + [1 for i in range(1)]
         shuffle(new_member)
-        new_member = new_member[:n]+[None, None, None]  # Weight, Size, Value
+        new_member = new_member[:1] + [objects[i].weight, objects[i].size, objects[i].value]  # Weight, Size, Value
         population_list.append(new_member)
     return population_list
 
@@ -56,8 +54,6 @@ if __name__ == "__main__":
     print(f"MAX WEIGHT: {MAX_WEIGHT}")
     print(f"MAX SIZE: {MAX_SIZE}")
     print("--------------------------------------")
-    items = get_items(N, input_items=objects, verbos=1)
-    print("--------------------------------------")
-    current_population = init_population(N, POPULATION_SIZE)
+    current_population = init_population(POPULATION_SIZE)
     for i in current_population:
         print(i)
