@@ -7,12 +7,12 @@ import csv
 csv_file_path = './KnapSack.csv'
 
 # Set The Problem  and Algorithm parameters
-N = 7  # Number of items
+N = 20  # Number of items
 MAX_WEIGHT = 220  # Maximum Weight of Bag
 MAX_SIZE = 2  # Maximum Size of Bag
 objects = []
 
-POPULATION_SIZE = 4
+POPULATION_SIZE = 300
 MUTATION_RATE = 0.8
 EPOCH = 200
 
@@ -34,6 +34,7 @@ with open(csv_file_path, 'r') as file:
         value = row[2]
         objects.append(Item(weight, size, value))
     objects.pop(0)
+    # Print items
     # for i in range(29):
     #     print(f"item:{i} Weight: {objects[i].weight} Size:{objects[i].size} Value:{objects[i].value}")
 
@@ -76,20 +77,29 @@ def mutation(population_list, n, p, m):
 # Weight
 def weight_distance(bag, n, max_weight, items_list):
     total_weight = 0
+    list_weight = 0
     for i in range(n):
         if bag[i]:
             total_weight += int(items_list[i].weight)
-    return abs(max_weight - total_weight)
+    if total_weight <= max_weight:
+        list_weight = abs(total_weight - max_weight)
+    else:
+        list_weight = 500
+    return list_weight
 
 
 # Size
 def size_distance(bag, n, max_size, items_list):
     total_size = 0
+    list_size = 0
     for i in range(n):
         if bag[i]:
             total_size += float(items_list[i].size)
-    total_size = abs(max_size - total_size)
-    return round(total_size, 2)
+    if total_size <= max_size:
+        list_size = abs(total_size - max_size)
+    else:
+        list_size = 10.00
+    return round(list_size, 2)
 
 
 # Value
@@ -110,14 +120,37 @@ def fitness(population_list, n, p, items_list, max_weight, max_size):
     return population_list
 
 
+# Sorter
+def sorter(population_list, index1, index2, index3):
+    if index1 == 500:
+        pass
+    elif index2 == 10.0:
+        pass
+    else:
+        sorted_list = sorted(population_list, key=lambda x: (x[index1], x[index2], -x[index3]))
+        return sorted_list
+
+
 # Main
 if __name__ == "__main__":
+    loop = 1
     print(f"MAX WEIGHT: {MAX_WEIGHT}")
     print(f"MAX SIZE: {MAX_SIZE}")
     print("--------------------------------------")
     current_population = init_population(N, POPULATION_SIZE)
-    current_population = cross_over(current_population, N, POPULATION_SIZE)
-    current_population = mutation(current_population, N, POPULATION_SIZE, MUTATION_RATE)
-    current_population = fitness(current_population, N, POPULATION_SIZE, objects, MAX_WEIGHT, MAX_SIZE)
-    for i in current_population:
-        print(i)
+    while loop:
+        while EPOCH:
+            current_population = cross_over(current_population, N, POPULATION_SIZE)
+            current_population = mutation(current_population, N, POPULATION_SIZE, MUTATION_RATE)
+            current_population = fitness(current_population, N, POPULATION_SIZE, objects, MAX_WEIGHT, MAX_SIZE)
+            current_population = sorter(current_population, N, N + 1, N + 2)
+            current_population = current_population[:POPULATION_SIZE]
+            EPOCH -= 1
+        else:
+            if current_population[0][N] == 500:
+                EPOCH = 200
+            elif current_population[0][N + 1] == 10.0:
+                EPOCH = 200
+            else:
+                loop = 0
+                print("Best Found Solution:", current_population[0])
