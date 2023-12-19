@@ -1,5 +1,5 @@
 # Import Dependencies
-from random import randint
+# from random import randint
 from random import shuffle
 import csv
 
@@ -7,22 +7,22 @@ import csv
 csv_file_path = './KnapSack.csv'
 
 # Set The Problem  and Algorithm parameters
-N = 1  # Number of items
+N = 29  # Number of items
 MAX_WEIGHT = 220  # Maximum Weight of Bag
 MAX_SIZE = 2  # Maximum Size of Bag
 objects = []
 
-POPULATION_SIZE = 29
+POPULATION_SIZE = 5
 MUTATION_RATE = 0.8
 EPOCH = 200
 
 
 # Item Class
 class Item:
-    def __init__(self, weight, size, value):
-        self.weight = weight
-        self.size = size
-        self.value = value
+    def __init__(self, item_weight, item_size, item_value):
+        self.weight = item_weight
+        self.size = item_size
+        self.value = item_value
 
 
 with open(csv_file_path, 'r') as file:
@@ -39,13 +39,24 @@ with open(csv_file_path, 'r') as file:
 
 
 # Init Population Function
-def init_population(p):
+def init_population(n, p):
     population_list = []
     for i in range(p):
-        new_member = [0 for i in range(1)] + [1 for i in range(1)]
+        new_member = [0 for i in range(n)] + [1 for i in range(n)]
         shuffle(new_member)
-        new_member = new_member[:1] + [objects[i].weight, objects[i].size, objects[i].value]  # Weight, Size, Value
+        new_member = new_member[:n] + [None, None, None]  # Weight, Size, Value
         population_list.append(new_member)
+    return population_list
+
+
+# Cross Over Function
+def cross_over(population_list, n, p):
+    n_new = n//2
+    for i in range(0, p, 2):
+        child1 = population_list[i][:n_new] + population_list[i+1][n_new:] + [None, None]
+        child2 = population_list[i+1][:n_new] + population_list[i][n_new:] + [None, None]
+        population_list.append(child1)
+        population_list.append(child2)
     return population_list
 
 
@@ -54,6 +65,7 @@ if __name__ == "__main__":
     print(f"MAX WEIGHT: {MAX_WEIGHT}")
     print(f"MAX SIZE: {MAX_SIZE}")
     print("--------------------------------------")
-    current_population = init_population(POPULATION_SIZE)
+    current_population = init_population(N, POPULATION_SIZE)
+    current_population = cross_over(current_population, N, POPULATION_SIZE)
     for i in current_population:
         print(i)
