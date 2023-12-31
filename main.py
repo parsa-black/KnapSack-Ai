@@ -35,8 +35,8 @@ with open(csv_file_path, 'r') as file:
         objects.append(Item(weight, size, value))
     objects.pop(0)
     # Print items
-    for i in range(29):
-        print(f"item:{i} Weight: {objects[i].weight} Size:{objects[i].size} Value:{objects[i].value}")
+    # for i in range(29):
+    #     print(f"item:{i} Weight: {objects[i].weight} Size:{objects[i].size} Value:{objects[i].value}")
 
 
 # Init Population Function
@@ -111,7 +111,9 @@ def sorter(population_list, index1, index2, index3):
 if __name__ == "__main__":
     print(f"MAX WEIGHT: {MAX_WEIGHT}")
     print(f"MAX SIZE: {MAX_SIZE}")
-    print("--------------------------------------")
+    print(f"Init Population: {POPULATION_SIZE}")
+    print(f"EPOCH: {EPOCH}")
+    # print("--------------------------------------")
     current_population = init_population(N, POPULATION_SIZE)
     while EPOCH:
         current_population = cross_over(current_population, N, POPULATION_SIZE)
@@ -124,5 +126,5 @@ if __name__ == "__main__":
         # for i in current_population:
         #     print(current_population[0])
     else:
-        print("-----------------------------------------")
+        print("-*-"*41)
         print("Best Found Solution:", current_population[0])
