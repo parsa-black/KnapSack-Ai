@@ -89,7 +89,7 @@ def size_distance(bag, n, max_size, items_list):
     for i in range(n):
         if bag[i]:
             total_size += float(items_list[i].size)
-    return round(abs(max_size - total_size), 1) if total_size >= max_size else 300
+    return round(abs(max_size - total_size), 2) if total_size >= max_size else 300
 
 
 # Value
@@ -131,7 +131,5 @@ if __name__ == "__main__":
         current_population = sorted(current_population, key=lambda x: -x[N + 2])
         EPOCH -= 1
     else:
-        for i in current_population:
-            print(i)
         print("-----------------------------------------")
         print("Best Found Solution:", current_population[0])
