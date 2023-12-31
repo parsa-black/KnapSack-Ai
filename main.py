@@ -9,7 +9,7 @@ csv_file_path = './KnapSack.csv'
 # Set The Problem  and Algorithm parameters
 N = 29  # Number of items
 MAX_WEIGHT = 220  # Maximum Weight of Bag
-MAX_SIZE = 2  # Maximum Size of Bag
+MAX_SIZE = 2.0  # Maximum Size of Bag
 objects = []
 
 POPULATION_SIZE = 800
