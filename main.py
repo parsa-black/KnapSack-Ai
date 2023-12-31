@@ -119,7 +119,7 @@ if __name__ == "__main__":
         current_population = fitness(current_population, N, POPULATION_SIZE, objects, MAX_WEIGHT, MAX_SIZE)
         current_population = sorter(current_population, N, N + 1, N + 2)
         current_population = current_population[:POPULATION_SIZE]
-        current_population = sorted(current_population, key=lambda x: -x[N + 2])
+        current_population = sorted(current_population, key=lambda x: (x[N], x[N + 1], -x[N + 2]))
         EPOCH -= 1
         # for i in current_population:
         #     print(current_population[0])
