@@ -35,8 +35,8 @@ with open(csv_file_path, 'r') as file:
         objects.append(Item(weight, size, value))
     objects.pop(0)
     # Print items
-    # for i in range(29):
-    #     print(f"item:{i} Weight: {objects[i].weight} Size:{objects[i].size} Value:{objects[i].value}")
+    for i in range(29):
+        print(f"item:{i} Weight: {objects[i].weight} Size:{objects[i].size} Value:{objects[i].value}")
 
 
 # Init Population Function
@@ -74,39 +74,30 @@ def mutation(population_list, n, p, m):
 
 # Fitness Function
 # Weight
-def weight_distance(bag, n, max_weight, items_list):
+def calculate_distances(bag, n, max_weight, max_size, items_list):
     total_weight = 0
+    total_size = 0
+    total_value = 0
+
     for i in range(n):
         if bag[i]:
             total_weight += int(items_list[i].weight)
-    return abs(max_weight - total_weight) if total_weight >= max_weight else 500
-
-
-# Size
-def size_distance(bag, n, max_size, items_list):
-    total_size = 0
-    list_size = 0
-    for i in range(n):
-        if bag[i]:
             total_size += float(items_list[i].size)
-    return round(abs(max_size - total_size), 2) if total_size >= max_size else 300
-
-
-# Value
-def value(bag, n, items_list):
-    total_value = 0
-    for i in range(n):
-        if bag[i]:
             total_value += int(items_list[i].value)
-    return total_value
+
+    weight_distance = abs(max_weight - total_weight) if total_weight >= max_weight else 500
+    size_distance = round(abs(max_size - total_size), 2) if total_size >= max_size else 300
+
+    return weight_distance, size_distance, total_value
 
 
 # Fitness
 def fitness(population_list, n, p, items_list, max_weight, max_size):
     for i in range(p * 2):
-        population_list[i][n] = weight_distance(population_list[i], n, max_weight, items_list)
-        population_list[i][n + 1] = size_distance(population_list[i], n, max_size, items_list)
-        population_list[i][n + 2] = value(population_list[i], n, items_list)
+        distances = calculate_distances(population_list[i], n, max_weight, max_size, items_list)
+        population_list[i][n:n + 2] = distances[:2]  # Update weight and size distances
+        population_list[i][n + 2] = distances[2]     # Update total value
+
     return population_list
 
 
