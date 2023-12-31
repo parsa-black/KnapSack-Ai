@@ -12,9 +12,9 @@ MAX_WEIGHT = 220  # Maximum Weight of Bag
 MAX_SIZE = 2  # Maximum Size of Bag
 objects = []
 
-POPULATION_SIZE = 200
+POPULATION_SIZE = 800
 MUTATION_RATE = 0.8
-EPOCH = 300
+EPOCH = 1000
 
 
 # Item Class
@@ -121,6 +121,8 @@ if __name__ == "__main__":
         current_population = current_population[:POPULATION_SIZE]
         current_population = sorted(current_population, key=lambda x: -x[N + 2])
         EPOCH -= 1
+        # for i in current_population:
+        #     print(current_population[0])
     else:
         print("-----------------------------------------")
         print("Best Found Solution:", current_population[0])
