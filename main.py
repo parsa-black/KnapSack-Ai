@@ -12,9 +12,9 @@ MAX_WEIGHT = 220  # Maximum Weight of Bag
 MAX_SIZE = 2.0  # Maximum Size of Bag
 objects = []
 
-POPULATION_SIZE = 800
-MUTATION_RATE = 0.8
-EPOCH = 1000
+POPULATION_SIZE = 200
+MUTATION_RATE = 0.05
+EPOCH = 400
 
 
 # Item Class
@@ -65,7 +65,7 @@ def cross_over(population_list, n, p):
 def mutation(population_list, n, p, m):
     chosen_ones = [i for i in range(p, p * 2)]
     shuffle(chosen_ones)
-    chosen_ones = chosen_ones[:int(((p * 2) - 1) * m)]
+    chosen_ones = chosen_ones[:int((p * 2) * m)]
     for i in chosen_ones:
         cell = randint(0, n - 1)
         population_list[i][cell] = 1 if population_list[i][cell] == 0 else 0
@@ -127,4 +127,8 @@ if __name__ == "__main__":
         #     print(current_population[0])
     else:
         print("-*-"*41)
+        # new_w = current_population[0][29] + MAX_WEIGHT
+        # current_population[0][29] = new_w
+        # new_s = current_population[0][30] + MAX_SIZE
+        # current_population[0][30] = new_s
         print("Best Found Solution:", current_population[0])
